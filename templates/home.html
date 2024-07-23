@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../statics/styles/style.css">
+    <title>Homepage</title>
+</head>
+<body>
+    <!-- With Code Modal -->
+    <div class="modal fade" id="withCodeModal" tabindex="-1" role="dialog" aria-labelledby="withCodeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="withCodeModal">KWINJIRA UKORESHEJE KODE</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        &cross;
+                    </button>
+                </div>
+                <form action="" method="POST">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="code">Injiza Kode Yawe</label>
+                            <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                            <small class="text-muted">Injiza kode wahawe muri message na DS</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Hagarika</button>
+                        <button type="submit" class="btn btn-primary">Injira</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Ask Code Modal -->
+    <div class="modal fade" id="askCodeModal" tabindex="-1" role="dialog" aria-labelledby="askCodeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="askCodeModal">SABA KODE</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        &cross;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">100 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikroeshwa rimwe gusa.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">500 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa umunsi wose.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">3000 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa icyumweru.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">10,000 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa ukwezi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="" method="POST" class="mt-4">
+                        <div class="form-group">
+                            <label for="code">Injiza Numero ya telefone</label>
+                            <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                            <small class="text-muted">Injiza numero ukoresha uri kwishyura</small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Hagarika</button>
+                            <button type="submit" class="btn btn-primary">Ishyura</button>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <header class="position-relative">
+        <img src="../statics/images/home-header.jpg" alt="header image" class="header-image">
+        <nav class="navbar bg-light fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LOGO</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LEARN TO DRIVE</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" 
+                            aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item pb-3">
+                                <abbr title="Get to the homepage">
+                                    <a href="home.html" class="nav-link active" aria-current="true">Home</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                                <abbr title="Go to the payment page">
+                                    <a href="payment.html">Payment</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                                <abbr title="Go to Blog page">
+                                    <a href="blog.html">Blog</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                                <abbr title="Get in touch with us">
+                                    <a href="contact-us.html">Contact Us</a>
+                                </abbr>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="p-3 text-center position-absolute top-50 start-50 translate-middle mt-4 bg-success">
+            <p class="text-light fs-6 fw-lighter fst-italic">
+                It's no longer a dream, you can get your driving licence today.
+            </p>
+            <h1 class="text-warning fw-bold">LEARN TO DRIVE WITH CONFIDENCE</h1>
+            <a href="#" class="btn btn-primary">LEARN MORE</a>
+        </div>
+    </header>
+
+    <section class="container-fluid mt-5">
+        <div class="hero-left mt-5">
+            <h1 class="card text-center" style="margin-left: 30px;">
+                DRIVING SCHOOL
+            </h1>
+        </div>
+        <div class="hero-righttext-center">
+           <div class="border-bottom p-4 pt-0 pb-0 mb-5">
+                <h3 class="text-uppercase">Tugutegura gukora ibizamini</h3>
+                <p class="text-muted">
+                    Uru rubuga rufite imyitozo itandukanye igufasha kwitegura ibizamini bikenerwa nk'uruhushya 
+                    rw'agateganyo rwo gutwara.
+                </p>
+                <button class="fa fa-play btn btn-outline-primary mb-2">Reba uko biba bimeze</button>
+            </div>
+            <div class="border-bottom p-4 pt-0 mb-2">
+                <h3 class="text-uppercase">Ibiciro biboneye</h3>
+                <p class="text-muted">Uhitamo amasomo n'imyitozo ihwanye n'amafaranga wifuza gutanga, kandi ukanyurwa.</p>
+                <button class="fa fa-play btn btn-outline-primary mb-2" data-toggle="modal" data-target="#askCodeModal">Reba ibiciro</button>
+           </div>
+           <div class="border-bottom p-4 pt-0 mb-2 d-flex flex-column flex-wrap justify-content-center align-items-center">
+                <div>
+                    <p>Hitamo uko winjira</p>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#withCodeModal">INJIRA NA KODE</button>
+                    <button class="btn btn-primary m-2" data-toggle="modal" data-target="#askCodeModal">SABA KODE</button>
+                </div>
+           </div>
+        </div>
+    </section>
+
+    <div class="blog-title">
+        <h1 class="text-center">VISIT OUR BLOG</h1>
+    </div>
+    <section class="blog-items row">
+        <div class="col-6">
+            <div class="card p-4 m-1">
+                <img src="../statics/images/in-road.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">Ni gute ukoresha side mirror</h5>
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere, ipsum.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card p-4 m-1">
+                <img src="../statics/images/side-mirror.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Ni gute badepasa</h5>
+                    <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere, ipsum.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="container-fluid bg-success p-4">
+        <div class="row">
+            <div class="footer-address col-4">
+                <h1 class="text-lowercase">LOGO</h1>
+                <p class="text-capitalize">rwanda</p>
+                <p class="text-capitalize">northen  rwanda</p>
+                <p class="text-capitalize">musanze, down town</p>
+            </div>
+            <div class="footer-quick-links col-4 mt-4">
+                <ul>
+                    <li><a href="" class="link-light">Home</a></li>
+                    <li><a href="" class="link-light">Amasomo</a></li>
+                    <li><a href="" class="link-light">Blog</a></li>
+                    <li><a href="" class="link-light">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social-links col-4 mt-4">
+                <h4 class="text-capitalize text-center" style="color: white;">social media links</h4>
+                <ul class="d-flex flex-row justify-content-around">
+                    <li><a href="" class="fa fa-whatsapp"></a></li>
+                    <li><a href="" class="fa fa-facebook"></a></li>
+                    <li><a href="" class="fa fa-twitter"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <!-- script for events -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 
+        crossorigin="anonymous"
+    >
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
