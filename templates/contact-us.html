@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../statics/styles/style.css">
+    <title>Homepage</title>
+</head>
+<body>
+    <header class="position-relative">
+        <img src="../statics/images/home-header.jpg" alt="header image" class="header-image">
+        <nav class="navbar bg-light fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LOGO</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LEARN TO DRIVE</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" 
+                            aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item pb-3">
+                                <abbr title="Get to the homepage">
+                                    <a href="home.html" class="nav-link active" aria-current="true">Home</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                            <abbr title="Go to the payment page">
+                                    <a href="payment.html">Payment</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                                <abbr title="Go to Blog page">
+                                    <a href="blog.html">Blog</a>
+                                </abbr>
+                            </li>
+                            <li class="nav-item pb-3">
+                                <abbr title="Get in touch with us">
+                                    <a href="contact-us.html">Contact Us</a>
+                                </abbr>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="p-3 text-center position-absolute top-50 start-50 translate-middle mt-4 bg-success">
+            <h1 class="text-warning fw-bold">LEARN TO DRIVE WITH CONFIDENCE</h1>
+        </div>
+    </header>
+    <div class="container mt-5">
+        <h2>Uzuza iyi form niba hari icyo ushaka kutubwira</h2>
+        <form action="" method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="code">Amazina yawe yombi</label>
+                <input type="text" name="" id="" class="form-control" required>
+                <small class="text-muted fst-italic">Urugero: Habumugisha Fiston</small>
+            </div>
+            <div class="form-group mt-3">
+                <label for="numero ya telephne">Numero ya telephone</label>
+                <input type="text" name="" id="" class="form-control" required>
+                <small class="text-muted fst-italic">Urugero: 0786 803 121 | 0729 014 388</small>
+            </div>
+            <div class="form-group mt-3">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" name="" id="">
+                <small class="text-muted fst-italic">Urugero: Andika email niba uyifite</small>
+            </div>
+            <div class="form-group mt-3">
+                <label for="igitekerezo">Igitekerezo cyangwa ikibazo ufite</label>
+                <textarea name="" id="" class="form-control"></textarea>
+            </div>
+            <div class="d-flex justify-content-end mb-3 mt-3">
+                <button type="submit" class="btn btn-primary">Uhoreza</button>
+            </div>
+        </form>
+    </div>
+    <footer class="container-fluid bg-success p-4">
+        <div class="row">
+            <div class="footer-address col-4">
+                <h1 class="text-lowercase">LOGO</h1>
+                <p class="text-capitalize">rwanda</p>
+                <p class="text-capitalize">northen  rwanda</p>
+                <p class="text-capitalize">musanze, down town</p>
+            </div>
+            <div class="footer-quick-links col-4 mt-4">
+                <ul>
+                    <li><a href="" class="link-light">Home</a></li>
+                    <li><a href="" class="link-light">Amasomo</a></li>
+                    <li><a href="" class="link-light">Blog</a></li>
+                    <li><a href="" class="link-light">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-social-links col-4 mt-4">
+                <h4 class="text-capitalize text-center" style="color: white;">social media links</h4>
+                <ul class="d-flex flex-row justify-content-around">
+                    <li><a href="" class="fa fa-whatsapp"></a></li>
+                    <li><a href="" class="fa fa-facebook"></a></li>
+                    <li><a href="" class="fa fa-twitter"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 
+        crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
