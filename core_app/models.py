@@ -188,6 +188,16 @@ class History(models.Model):
     test_performance=models.JSONField()
     date_created=models.DateTimeField(auto_now_add=True)
 
+
+class LeaderBoard(models.Model):
+    guest = models.OneToOneField(Guest, on_delete=models.CASCADE)
+    scores = models.PositiveIntegerField(default=0)
+
+    def get_position(self):
+        """Return the current position of guest user"""
+        pass
+
+
 class Payments(models.Model):
     guest=models.ForeignKey(Guest, null=True, on_delete=models.SET_NULL)
     method = models.CharField(max_length=256, choices=PAYMENT_METHOD_CHOICES)
@@ -212,11 +222,3 @@ class Reply(models.Model):
     contents=models.CharField(max_length=1024)
     guest_name=models.CharField(max_length=256)
     date_created=models.DateTimeField(auto_now_add=True)
-
-class LeaderBoard(models.Model):
-    guest=models.OneToOneField(Guest, on_delete=models.CASCADE)
-    scores=models.PositiveIntegerField(default=0)
-
-    def get_position(self):
-        """Return the current position of guest user"""
-        pass
