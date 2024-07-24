@@ -1,5 +1,6 @@
 # Utilities
 from .utils import generate_random_code
+from .managers import UserCustomerManager
 
 # Python code modules
 from datetime import datetime, timedelta
@@ -17,11 +18,14 @@ PAYMENT_METHOD_CHOICES = (
 )
 
 class User(AbstractUser):
-    email=models.EmailField()
-    first_name=models.CharField(max_length=256, null=False)
-    last_name=models.CharField(max_length=256, null=False)
+    email=models.EmailField(unique=True)
     phone_number = models.CharField(max_length=10, null=False, blank=False)
     is_editor=models.BooleanField(default=False)
+    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
+    objects = UserCustomerManager()
 
     def __str__(self):
         return self.email
@@ -37,8 +41,8 @@ class User(AbstractUser):
         return self.is_editor
 
 class Subscription(models.Model):
-    identifier=models.IntegerField()
-    verbose=models.CharField(max_length=10)
+    identifier=models.IntegerField(unique=True)
+    verbose=models.CharField(max_length=10, unique=True)
     date_created=models.DateTimeField(auto_now_add=True)
     duration=models.PositiveIntegerField()
 
@@ -53,7 +57,7 @@ class Subscription(models.Model):
 
 class Guest(models.Model):
     phone_number=models.CharField(max_length=10, null=False, blank=False)
-    code=models.CharField(max_length=10, null=True)
+    code=models.CharField(max_length=10, null=True, unique=True)
     subscription=models.OneToOneField(Subscription, null=True, on_delete=models.SET_NULL)
     code_used_count=models.IntegerField(default=0)
     last_active=models.DateTimeField(null=True)
@@ -102,6 +106,7 @@ class Guest(models.Model):
         """Regenerates new code"""
         self.generate_code()
 
+    # Handle no duplicate allowed
 
 class Question(models.Model):
     question=models.CharField(max_length=256)
@@ -202,7 +207,7 @@ class Payments(models.Model):
     guest=models.ForeignKey(Guest, null=True, on_delete=models.SET_NULL)
     method = models.CharField(max_length=256, choices=PAYMENT_METHOD_CHOICES)
     amount=models.CharField(max_length=256)
-    subscription=models.ForeignKey(Subscription, null=True)
+    subscription=models.ForeignKey(Subscription, null=True, on_delete=models.SET_NULL)
 
 class Blog(models.Model):
     author=models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
