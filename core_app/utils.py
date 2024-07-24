@@ -22,4 +22,4 @@ def unpack_code(code: str)->str:
 
 def dump_dict(dict: dict):
     """Return json format of passed dictionary"""
-    pass
+    return json.dumps(dict)
