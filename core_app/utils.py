@@ -23,3 +23,13 @@ def unpack_code(code: str)->str:
 def dump_dict(dict: dict):
     """Return json format of passed dictionary"""
     return json.dumps(dict)
+
+
+def instantiate_api():
+    pass
+
+def process_payment():
+    pass
+
+def send_code():
+    pass
