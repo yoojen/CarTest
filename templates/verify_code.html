@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block header %}
+    <nav class="navbar bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">LOGO</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LEARN TO DRIVE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" 
+                        aria-label="Close">
+                    </button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item pb-3">
+                            <abbr title="Get to the homepage">
+                                <a href="{% url 'core_app:home' %}" class="nav-link active" aria-current="true">Home</a>
+                            </abbr>
+                        </li>
+                        <li class="nav-item pb-3">
+                            <abbr title="Go to the payment page">
+                                <a href="{% url 'core_app:payment' %}">Payment</a>
+                            </abbr>
+                        </li>
+                        <li class="nav-item pb-3">
+                            <abbr title="Go to Blog page">
+                                <a href="{% url 'core_app:blog' %}">Blog</a>
+                            </abbr>
+                        </li>
+                        <li class="nav-item pb-3">
+                            <abbr title="Get in touch with us">
+                                <a href="{% url 'core_app:contact_us' %}">Contact Us</a>
+                            </abbr>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+<div class="container" style="margin-top: 10%;">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="code">Injiza Kode Yawe</label>
+                <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                <small class="text-muted">Injiza kode wahawe muri message na DS</small>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary mx-3 mb-3">Injira</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block footer %}
+    <p class="text-muted text-center">Eugene mutuyimana developer &copy;</p>
+{% endblock %}

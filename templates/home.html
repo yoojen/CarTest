@@ -3,7 +3,96 @@
 {% block header %}
     {% include "header.html" with page="LEARN TO DRIVE WITH CONFIDENCE"%}
 {% endblock %}
-
+    <!-- With Code Modal -->
+    <div class="modal fade" id="withCodeModal" tabindex="-1" role="dialog" aria-labelledby="withCodeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="withCodeModal">KWINJIRA UKORESHEJE KODE</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        &cross;
+                    </button>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="code">Injiza Kode Yawe</label>
+                            <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                            <small class="text-muted">Injiza kode wahawe muri message na DS</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Hagarika</button>
+                        <button type="submit" class="btn btn-primary">Injira</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Ask Code Modal -->
+    <div class="modal fade" id="askCodeModal" tabindex="-1" role="dialog" aria-labelledby="askCodeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="askCodeModal">SABA KODE</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        &cross;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-group text-center">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">100 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikroeshwa rimwe gusa.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">500 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa umunsi wose.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">3000 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa icyumweru.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">10,000 FRW</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text text-muted">Urahabwa kode ikoreshwa ukwezi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="{% url 'core_app:generate_code' %}" method="POST" class="mt-4" id="ask-code-form">
+                        {% csrf_token%}
+                        <div class="form-group">
+                            <label for="id_phone_number">Phone number:</label>
+                            {{form.phone_number}}
+                            <span class="text-muted" id="id_phone_number_helptext">Injiza numero ukoresha uri kwishyura</span>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Hagarika</button>
+                            <button type="submit" class="btn btn-primary">Ishyura</button>
+                        </div>
+                        <div class="errors text-danger"></div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 {% block content %}
     <section class="container-fluid mt-5">
         <div class="hero-left mt-5">
@@ -64,6 +153,41 @@
     </section>
 {% endblock %}
 
+<script>
+    const askCodeForm=document.querySelector("#ask-code-form")
+    const phoneInput=document.querySelector("#id_phone_number")
+    const csrftoken=document.getElementsByName("csrfmiddlewaretoken")
+    const errors=document.querySelector(".errors")
+
+    const patterns = ["078", "079", "072", "073"];
+   
+    askCodeForm.addEventListener('submit', async (e)=>{
+        e.preventDefault()
+        const checkInput = patterns.some(pattern => phoneInput.value.startsWith(pattern))
+        if(!checkInput){
+            errors.innerHTML = ''
+            errors.innerHTML="Please provide correct phone number"
+        }
+        else{
+            const actualCsrfToken=document.cookie.split("=")[1]
+            errors.innerHTML='loading...'
+            const data = await fetch("{% url 'core_app:generate_code' %}", {
+                method: 'POST',
+                headers:{
+                    "X-CSRFToken": actualCsrfToken,
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                body: new URLSearchParams({
+                    'phone_number': phoneInput.value,
+                })
+            })
+            const res = await data.json()
+            if (res.status == 'ok'){
+                window.location='/continue'
+            }
+        }
+    })
+</script>
 {% block footer %}
     {% include "footer.html" %}
 {% endblock %}
