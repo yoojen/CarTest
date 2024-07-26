@@ -1,12 +1,13 @@
 # Utilities
-from .utils import generate_random_code
+from .utils import generate_random_code, unpack_code
 from .managers import UserCustomerManager
 
 # Python code modules
-from datetime import datetime, timedelta
+from datetime import timedelta
 import re
 
 # Django modules
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -39,49 +40,49 @@ class User(AbstractUser):
     def is_editor(self):
         """Return True if user is editor"""
         return self.is_editor
-
-class Subscription(models.Model):
-    identifier=models.IntegerField(unique=True)
-    verbose=models.CharField(max_length=10, unique=True)
-    date_created=models.DateTimeField(auto_now_add=True)
-    duration=models.PositiveIntegerField()
-
-    def __str__(self):
-        return self.verbose
-    
-    @property
-    def is_subscription_valid(self):
-        """Check if user is still able to work on tests"""
-        return self.date_created < ( self.date_created + timedelta(hours=self.duration))
-    
+ 
 
 class Guest(models.Model):
     phone_number=models.CharField(max_length=10, null=False, blank=False)
-    code=models.CharField(max_length=10, null=True, unique=True)
-    subscription=models.OneToOneField(Subscription, null=True, on_delete=models.SET_NULL)
-    code_used_count=models.IntegerField(default=0)
     last_active=models.DateTimeField(null=True)
     date_created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.phone_number
     
-    @property
-    def is_subscription_active(self):
-        """Check if guest user subscription is active"""
-        return self.subscription.is_subscription_valid()
 
+
+class Subscription(models.Model):
+    guest = models.OneToOneField(Guest, on_delete=models.CASCADE)
+    identifier = models.IntegerField()
+    verbose = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, null=True, unique=True)
+    code_created_at = models.DateTimeField(null=True)
+    code_used_count = models.IntegerField(default=0)
+    date_created = models.DateTimeField(auto_now_add=True)
+    duration = models.PositiveIntegerField(null=True)
+
+    def __str__(self):
+        return self.verbose
+
+    def is_subscription_valid(self):
+        if self.identifier == 0:
+            if self.code_used_count >= 1:
+                return False
+            return True
+        else:
+            if self.duration >= 24:
+                return (self.code_created_at + timedelta(hours=self.duration)) < timezone.now()
+            return False
+    
     @property
     def is_code_expired(self):
         """Check if code is used atleast once"""
-        try:
-            sub = self.subscription.is_subscription_valid()
-        except Exception:
-            return False
+        sub = self.is_subscription_valid()
         if not sub:
-            self.code=None
-            self.code_used_count=0
-            self.subscription=None
+            self.code = None
+            self.code_used_count = 0
+            self.subscription = None
             self.save()
 
             return True
@@ -100,13 +101,14 @@ class Guest(models.Model):
         """Generate operational code"""
         code = generate_random_code()
         self.code = code
+        self.code_created_at = timezone.now()
         self.save()
-    
+
     def re_generate_code(self):
         """Regenerates new code"""
         self.generate_code()
 
-    # Handle no duplicate allowed
+
 
 class Question(models.Model):
     question=models.CharField(max_length=256)
@@ -185,7 +187,7 @@ class InProgress(models.Model):
     
     @property
     def get_elapsed_time(self):
-        return datetime.now - self.date_created
+        return timezone.now - self.date_created
 
 class History(models.Model):
     guest = models.ForeignKey(Guest, null=True, on_delete=models.SET_NULL)

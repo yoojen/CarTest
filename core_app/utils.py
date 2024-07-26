@@ -5,8 +5,8 @@ import random
 def generate_random_code()->str:
     """Return combined hex and immutable pattern random codes"""
     immutable_pattert = 'AVI' # To be stored in env
-    random = random.randint(0, 9_999_999)
-    return f"{immutable_pattert}{random}"
+    random_number = random.randint(0, 9_999_999)
+    return f"{immutable_pattert}{random_number}"
 
 def transform_code_to_hex(code: str)->str:
     """Transform code to hex values"""
@@ -24,7 +24,14 @@ def dump_dict(dict: dict):
     """Return json format of passed dictionary"""
     return json.dumps(dict)
 
-
+# def create_guest_user(phone_number):
+#     """Create guest user from phone number"""
+#     user, created = Guest.objects.get_or_create(phone_number, last_active=datetime.now())
+#     if created:
+#         return user
+#     else:
+#         return None
+    
 def instantiate_api():
     pass
 

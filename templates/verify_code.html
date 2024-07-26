@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load custom_filters %}
+
 {% block header %}
     <nav class="navbar bg-light fixed-top">
         <div class="container-fluid">
@@ -42,19 +44,32 @@
         </div>
     </nav>
 {% endblock %}
+
 {% block content %}
 <div class="container" style="margin-top: 10%;">
-    <form action="" method="POST">
+    {% block messages %}
+        {% if messages %}
+            {% for msg in messages %}
+                {% if msg.tags|is_error %}
+                    <small class="text-danger">{{msg}}</small>
+                {% endif %}
+                {% if msg.tags|is_success%}
+                    <small class="text-success">{{msg}}</small>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+    <form action="{% url 'core_app:verify_code' %}" method="POST">
         {% csrf_token %}
         <div class="modal-body">
             <div class="form-group">
                 <label for="code">Injiza Kode Yawe</label>
-                <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                {{form.code}}
                 <small class="text-muted">Injiza kode wahawe muri message na DS</small>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary mx-3 mb-3">Injira</button>
+            <button type="submit" class="btn btn-primary mx-3 mb-1">Injira</button>
         </div>
     </form>
 </div>
