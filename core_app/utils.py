@@ -24,6 +24,15 @@ def dump_dict(dict: dict):
     """Return json format of passed dictionary"""
     return json.dumps(dict)
 
+
+def set_session_infos(request, code, guest_sub, progress):
+    """Setting exam session"""
+    print("setting session.......")
+    request.session['code'] = code
+    request.session['guest'] = guest_sub.guest.id
+    request.session['current_index'] = progress.current_index
+    request.session['in_progress'] = True
+
 # def create_guest_user(phone_number):
 #     """Create guest user from phone number"""
 #     user, created = Guest.objects.get_or_create(phone_number, last_active=datetime.now())
