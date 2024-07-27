@@ -63,7 +63,7 @@ class Subscription(models.Model):
     duration = models.PositiveIntegerField(null=True)
 
     def __str__(self):
-        return self.verbose
+        return f"{self.guest}"
 
     def is_subscription_valid(self):
         if self.identifier == 0:
@@ -72,7 +72,7 @@ class Subscription(models.Model):
             return True
         else:
             if self.duration >= 24:
-                return (self.code_created_at + timedelta(hours=self.duration)) < timezone.now()
+                return not (self.code_created_at + timedelta(hours=self.duration)) < timezone.now()
             return False
     
     @property
@@ -83,6 +83,7 @@ class Subscription(models.Model):
             self.code = None
             self.code_used_count = 0
             self.subscription = None
+            self.duration=0
             self.save()
 
             return True
@@ -118,11 +119,6 @@ class Question(models.Model):
     def __str__(self):
         return self.question
     
-    @property
-    def get_random(self):
-        """Return random questions"""
-        queryset=self.objects.order_by('?')[:20]
-        return queryset
     
 class Answers(models.Model):
     question=models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -178,12 +174,13 @@ class GuestPerformance(models.Model):
 # }
 class InProgress(models.Model):
     guest=models.OneToOneField(Guest, on_delete=models.CASCADE)
-    questions=models.JSONField()
-    is_done=models.BooleanField(default=False)
+    questions=models.ManyToManyField(Question)
+    answers=models.JSONField(null=True)
+    current_index=models.IntegerField(default=0)
     date_created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.guest
+        return f"{self.guest}"
     
     @property
     def get_elapsed_time(self):
