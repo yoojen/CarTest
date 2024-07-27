@@ -1,8 +1,13 @@
+from django.utils import timezone
+from datetime import timedelta
+
 from django.http import JsonResponse
 from django.contrib import messages
 from django.shortcuts import redirect, render
+
+from .utils import set_session_infos
 from .forms import CodeVerificationForm, GenerateCodeForm
-from .models import Guest, Subscription, Payments
+from .models import Guest, InProgress, Question, Subscription, Payments
 
 
 def home(request):
@@ -11,7 +16,17 @@ def home(request):
 
 
 def exam(request):
-    return render(request=request, template_name='exam.html')
+    if not request.session.get('in_progress', None):
+        messages.error(request, "Session has expired")
+        return redirect("core_app:verify_code")
+    current_index = request.session.get('current_index', None)
+    user = request.session.get('guest', None)
+    user=Guest.objects.filter(id=user).first()
+    user_progress=InProgress.objects.filter(guest=user).first()
+    questions = user_progress.questions.order_by('id')
+
+    return render(request=request, template_name='exam.html', 
+                  context={'index': current_index, 'question': questions[current_index]})
 
 def contact_us(request):
     return render(request=request, template_name='contact-us.html')
@@ -26,6 +41,8 @@ def payment(request):
 
 def simulate_payment():
     phone_number = '0729014388'
+    verbose="day"
+    duration=24
     user, created = Guest.objects.get_or_create(phone_number=phone_number)
     if not user:
         return None
@@ -36,10 +53,10 @@ def simulate_payment():
     # User exists
     user_sub = Subscription.objects.filter(guest=user).first()
     if not user_sub:
-        user_sub = Subscription.objects.create(guest=user, identifier=1, verbose="week", duration=24)
+        user_sub = Subscription.objects.create(guest=user, identifier=1, verbose=verbose, duration=duration)
         return user_sub
     user_sub.identifier=1
-    user_sub.verbose="once"
+    user_sub.verbose="day"
     user_sub.duration=24
     user_sub.save()
     return user_sub
@@ -48,15 +65,9 @@ def generate_code(request):
     if request.method == 'POST':
         form = GenerateCodeForm(request.POST)
         if form.is_valid():
-            # phone_number = form.cleaned_data['phone_number']
-            # user, created = Guest.objects.get_or_create(phone_number=phone_number)
-            # if not user:
-            #     form.add_error("User not created")
             """payment simulation"""
             user = simulate_payment()
             user.generate_code()
-            # After receiving phone number, initialize payment, code generation and code is sent
-            # Redirect user to verify code page
             print(f"Sending code-> {user.code}")
             import time
             time.sleep(1)
@@ -85,7 +96,21 @@ def verify_code(request):
                 return redirect("core_app:verify_code")
             guest_sub.code_used_count += 1
             guest_sub.save()
+
+            # Check if user already has an ongoing exam
+            if request.session.get('in_progress', None):
+                return redirect("core_app:exam")
+            else:
+                # Assign Questions
+                assigned_questions = Question.objects.order_by('?')[:5]
+                progress, created = InProgress.objects.get_or_create(guest=guest_sub.guest)
+                progress.questions.set(assigned_questions)
+                progress.current_index = 0
+                # Setting session
+                set_session_infos(request=request, code=code, guest_sub=guest_sub, progress=progress)
+                progress.save()
             return redirect("core_app:exam")
         messages.error(request, "Injizamo kode neza")
         return redirect("core_app:verify_code")
     return render(request=request, template_name="verify_code.html", context={'form': form})
+
