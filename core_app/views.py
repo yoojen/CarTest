@@ -1,5 +1,6 @@
 from django.utils import timezone
 from datetime import timedelta
+import random
 
 from django.http import JsonResponse
 from django.contrib import messages
@@ -7,7 +8,7 @@ from django.shortcuts import redirect, render
 
 from .utils import set_session_infos
 from .forms import CodeVerificationForm, GenerateCodeForm
-from .models import Guest, InProgress, Question, Subscription, Payments
+from .models import Answers, Guest, InProgress, Question, Subscription, Payments
 
 
 def home(request):
@@ -24,9 +25,17 @@ def exam(request):
     user=Guest.objects.filter(id=user).first()
     user_progress=InProgress.objects.filter(guest=user).first()
     questions = user_progress.questions.order_by('id')
-
+    qs_opts =Answers.objects.filter(
+        question = questions[current_index]).first()
+    q_opts = [qs_opts.dummy_answer_1, qs_opts.dummy_answer_2,
+              qs_opts.dummy_answer_3, qs_opts.correct_answer]
+    random.shuffle(q_opts)
     return render(request=request, template_name='exam.html', 
-                  context={'index': current_index, 'question': questions[current_index]})
+                  context={'index': current_index + 1, 
+                           'question': questions[current_index],
+                           'options': q_opts,
+                           'crt': qs_opts.correct_answer # This will be used for next or back when user has initially answered id
+                           })
 
 def contact_us(request):
     return render(request=request, template_name='contact-us.html')
@@ -114,3 +123,6 @@ def verify_code(request):
         return redirect("core_app:verify_code")
     return render(request=request, template_name="verify_code.html", context={'form': form})
 
+
+def next_question(request):
+    pass

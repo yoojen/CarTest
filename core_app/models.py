@@ -113,7 +113,6 @@ class Subscription(models.Model):
 
 class Question(models.Model):
     question=models.CharField(max_length=256)
-    correct_answer=models.CharField(max_length=256)
     date_created=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -122,12 +121,13 @@ class Question(models.Model):
     
 class Answers(models.Model):
     question=models.ForeignKey(Question, on_delete=models.CASCADE)
+    correct_answer = models.CharField(max_length=256)
     dummy_answer_1 = models.CharField(max_length=256)
     dummy_answer_2 = models.CharField(max_length=256)
     dummy_answer_3 = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.question
+        return f"{self.question}"
     
     def shuffle_dummy_answers(self):
         """Return random questions"""

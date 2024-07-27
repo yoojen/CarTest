@@ -28,113 +28,24 @@
             </h1>
             <small class="text-muted">I'll have hidden input for question id to be used to check if answer is correct</small>
         </section>
-        <form action="" id="exam-form" class="w-500">
+        <form action="" id="exam-form" class="w-500" method="POST">
+            {% csrf_token %}
             <div class="container">
                 <div class="form-control">
                     <input type="hidden" name="question_id" id="" readonly disabled>
-                    <p>Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Fugiat deserunt rerum tempore magni aut consequuntur dicta dignissimos assumenda nam culpa!
-                    </p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_one" id="" value="option 1" >
-                        <label for="" class="form-check-label">Option 1</label>                    
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_one" id="" value="option 2">
-                        <label for="" class="form-check-label">Option 2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_one" id="" value="option 3">
-                        <label for="" class="form-check-label">Option 3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_one" id="" value="option 4">
-                        <label for="" class="form-check-label">Option 4</label>
-                    </div>
-                </div>
-                <div class="form-control mt-2 mb-2">
-                    <p>Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Fugiat deserunt rerum tempore magni aut consequuntur dicta dignissimos assumenda nam culpa!
-                    </p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_two" id="" value="option 1" >
-                        <label for="" class="form-check-label">Option 1</label>                    
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_two" id="" value="option 2">
-                        <label for="" class="form-check-label">Option 2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_two" id="" value="option 3">
-                        <label for="" class="form-check-label">Option 3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_two" id="" value="option 4">
-                        <label for="" class="form-check-label">Option 4</label>
-                    </div>
-                </div>
-                <div class="form-control mt-2 mb-2">
-                    <p>Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Fugiat deserunt rerum tempore magni aut consequuntur dicta dignissimos assumenda nam culpa!
-                    </p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_three" id="" value="option 1" >
-                        <label for="" class="form-check-label">Option 1</label>                    
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_three" id="" value="option 2">
-                        <label for="" class="form-check-label">Option 2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_three" id="" value="option 3">
-                        <label for="" class="form-check-label">Option 3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_three" id="" value="option 4">
-                        <label for="" class="form-check-label">Option 4</label>
-                    </div>
-                </div>
-                <div class="form-control mt-2 mb-2">
-                    <p>Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Fugiat deserunt rerum tempore magni aut consequuntur dicta dignissimos assumenda nam culpa!
-                    </p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_four" id="" value="option 1" >
-                        <label for="" class="form-check-label">Option 1</label>                    
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_four" id="" value="option 2">
-                        <label for="" class="form-check-label">Option 2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_four" id="" value="option 3">
-                        <label for="" class="form-check-label">Option 3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_four" id="" value="option 4">
-                        <label for="" class="form-check-label">Option 4</label>
-                    </div>
-                </div>
-                <div class="form-control mt-2 mb-2">
-                    <p>Question 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                        Fugiat deserunt rerum tempore magni aut consequuntur dicta dignissimos assumenda nam culpa!
-                    </p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_five" id="" value="option 1" >
-                        <label for="" class="form-check-label">Option 1</label>                    
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_five" id="" value="option 2">
-                        <label for="" class="form-check-label">Option 2</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_five" id="" value="option 3">
-                        <label for="" class="form-check-label">Option 3</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="option_five" id="" value="option 4">
-                        <label for="" class="form-check-label">Option 4</label>
-                    </div>
+                    <p>{{index}}. {{question.question}}</p>
+                    {% for option in options %}
+                        {% if option == crt %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="option_one" id="" value="{{options.dummy_answer_1}}" checked>
+                                <label for="" class="form-check-label">{{option}}</label>                    
+                            </div>
+                        {% endif %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="option_one" id="" value="{{options.dummy_answer_1}}" >
+                            <label for="" class="form-check-label">{{option}}</label>                    
+                        </div>
+                    {% endfor %}
                 </div>
                 <button type="submit" class="btn btn-primary mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
             </div>
