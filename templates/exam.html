@@ -28,7 +28,7 @@
             </h1>
             <small class="text-muted">I'll have hidden input for question id to be used to check if answer is correct</small>
         </section>
-        <form action="" id="exam-form" class="w-500" method="POST">
+        <form action="{% url 'core_app:next_question' %}" id="exam-form" class="w-500" method="POST">
             {% csrf_token %}
             <div class="container">
                 <div class="form-control">
@@ -37,14 +37,15 @@
                     {% for option in options %}
                         {% if option == crt %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="option_one" id="" value="{{options.dummy_answer_1}}" checked>
+                                <input class="form-check-input" type="radio" name="answer" id="" value="{{option}}">
+                                <label for="" class="form-check-label">{{option}}</label>                    
+                            </div>
+                        {% else %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="answer" id="" value="{{option}}" >
                                 <label for="" class="form-check-label">{{option}}</label>                    
                             </div>
                         {% endif %}
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="option_one" id="" value="{{options.dummy_answer_1}}" >
-                            <label for="" class="form-check-label">{{option}}</label>                    
-                        </div>
                     {% endfor %}
                 </div>
                 <button type="submit" class="btn btn-primary mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
