@@ -112,7 +112,7 @@ def verify_code(request):
             else:
                 # Assign Questions
                 assigned_questions = Question.objects.order_by('?')[:5]
-                progress, created = InProgress.objects.get_or_create(guest=guest_sub.guest)
+                progress, created = InProgress.objects.get_or_create(guest=guest_sub.guest,answers={})
                 progress.questions.set(assigned_questions)
                 progress.current_index = 0
                 # Setting session
@@ -125,4 +125,42 @@ def verify_code(request):
 
 
 def next_question(request):
-    pass
+    if request.method=='POST':
+        form = request.POST
+        answer = form.get('answer', None)
+        current_index=request.session.get('current_index', None)
+        if current_index is None:
+            messages.error(request, "Something wrong happened")
+            return redirect("core_app:verify_code")
+        guest=Guest.objects.filter(pk=request.session['guest']).first()
+        guest_prog = InProgress.objects.filter(guest=guest).first()
+        current_answers = guest_prog.answers
+        if str(current_index) not in current_answers.keys():
+            print("Not in")
+            current_answers[current_index] = answer
+            guest_prog.answers = current_answers
+        else:
+            for k in current_answers.keys():
+                if k == str(current_index):
+                    current_answers[k]=answer
+        guest_prog.save()
+
+        if current_index == 19:
+            print("No more, questions, final screen loading")
+            return JsonResponse({})
+        request.session['current_index'] = current_index + 1
+        return redirect("core_app:exam")
+    return JsonResponse({})
+
+
+def prev_question(request):
+    current_index = request.session.get('current_index', None)
+    if current_index is None:
+        messages.error(request, "Something wrong happened")
+        return redirect("core_app:verify_code")
+    if current_index < 1:
+        return redirect("core_app:exam")
+    request.session['current_index'] = current_index - 1
+    return redirect("core_app:exam")
+def final_screen(request):
+    return render(request, "final_screen.html")
