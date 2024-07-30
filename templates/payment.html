@@ -38,18 +38,72 @@
                 </div>
             </div>
         </div>
-        <form action="" method="POST" class="mt-4">
+        <form action="{% url 'core_app:generate_code' %}" method="POST" class="mt-4" id="ask-code-form">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="code">Injiza Numero ya telefone</label>
-                <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                {{form.phone_number}}
                 <small class="text-muted">Injiza numero ukoresha uri kwishyura</small>
             </div>
             <div class="d-flex justify-content-end mb-3">
                 <button type="submit" class="btn btn-primary">Ishyura</button>
             </div>
+            <div class="errors text-danger"></div>
         </form>
     </div>
 {% endblock %}
+
+<script>
+    const askCodeForm=document.querySelector("#ask-code-form")
+    const phoneInput=document.querySelector("#id_phone_number")
+    const errors=document.querySelector(".errors")
+
+    const patterns = ["078", "079", "072", "073"];
+   
+    askCodeForm.addEventListener('submit', async (e)=>{
+        e.preventDefault()
+        const checkInput = patterns.some(pattern => phoneInput.value.startsWith(pattern))
+        if(!checkInput){
+            errors.innerHTML = ''
+            errors.innerHTML="Please provide correct phone number"
+        }
+        else{
+            const actualCsrfToken=document.cookie.split("=")[1]
+            errors.innerHTML='loading...'
+            const data = await fetch("{% url 'core_app:generate_code' %}", {
+                method: 'POST',
+                headers:{
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
+                body: new URLSearchParams({
+                    'phone_number': phoneInput.value,
+                })
+            })
+            const res = await data.json()
+            if (res.status == 'ok'){
+                window.location='/continue'
+            }
+        }
+    })
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        console.log(cookies)
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            console.log(cookie)
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                console.log(cookieValue)
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
 {% block footer %}
     {% include "footer.html" %}
 {% endblock %}
