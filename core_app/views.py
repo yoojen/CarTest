@@ -112,16 +112,13 @@ def verify_code(request):
             if request.session.get('in_progress', None):
                 return redirect("core_app:exam")
             else:
-                # Remove in progress user items
-                print("user has no in progress")
                 # Assign Questions
                 assigned_questions = Question.objects.order_by('?')[:5]
                 progress = InProgress.objects.filter(guest=guest_sub.guest).first()
-                print(progress)
                 if progress:
+                    # Remove in progress user items
                     progress.delete()
                 progress = InProgress.objects.create(guest=guest_sub.guest)
-                # progress.save()
                 progress.questions.set(assigned_questions)
                 progress.current_index = 0
                 progress.save()
@@ -162,8 +159,7 @@ def next_question(request):
             print("No more, questions, final screen loading")
             return JsonResponse({})
         request.session['current_index'] = current_index + 1
-        return redirect("core_app:exam")
-    return JsonResponse({})
+    return redirect("core_app:exam")
 
 
 def prev_question(request):

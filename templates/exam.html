@@ -48,7 +48,13 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-primary mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
+                <div class="button d-flex justify-content-end">
+                    {% if index == 20 %}
+                        <button type="submit" class="btn btn-primary mt-2 mb-2 pt-2 pb-2 px-5">Finish</button>
+                    {% endif %}
+                    <a href="{% url 'core_app:prev_question' %}" class="btn btn-primary mt-2 mb-2  mx-2 pt-2 pb-2 px-5">Back</a>
+                    <button type="submit" class="btn btn-success mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
+                </div>
             </div>
         </form>
     </div>
