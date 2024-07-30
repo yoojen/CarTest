@@ -34,7 +34,7 @@ def exam(request):
                   context={'index': current_index + 1, 
                            'question': questions[current_index],
                            'options': q_opts,
-                           'crt': qs_opts.correct_answer # This will be used for next or back when user has initially answered id
+                           'crt': request.session.get('crt') # This will be used for next or back when user has initially answered id
                            })
 
 def contact_us(request):
@@ -45,7 +45,9 @@ def blog(request):
 
 
 def payment(request):
-    return render(request=request, template_name='payment.html')
+    form = GenerateCodeForm(request.POST)
+
+    return render(request=request, template_name='payment.html', context={'form': form})
 
 
 def simulate_payment():
@@ -110,14 +112,21 @@ def verify_code(request):
             if request.session.get('in_progress', None):
                 return redirect("core_app:exam")
             else:
+                # Remove in progress user items
+                print("user has no in progress")
                 # Assign Questions
                 assigned_questions = Question.objects.order_by('?')[:5]
-                progress, created = InProgress.objects.get_or_create(guest=guest_sub.guest,answers={})
+                progress = InProgress.objects.filter(guest=guest_sub.guest).first()
+                print(progress)
+                if progress:
+                    progress.delete()
+                progress = InProgress.objects.create(guest=guest_sub.guest)
+                # progress.save()
                 progress.questions.set(assigned_questions)
                 progress.current_index = 0
+                progress.save()
                 # Setting session
                 set_session_infos(request=request, code=code, guest_sub=guest_sub, progress=progress)
-                progress.save()
             return redirect("core_app:exam")
         messages.error(request, "Injizamo kode neza")
         return redirect("core_app:verify_code")
@@ -130,22 +139,26 @@ def next_question(request):
         answer = form.get('answer', None)
         current_index=request.session.get('current_index', None)
         if current_index is None:
-            messages.error(request, "Something wrong happened")
+            messages.error(request, "Something wrong happened Or session has expired")
             return redirect("core_app:verify_code")
-        guest=Guest.objects.filter(pk=request.session['guest']).first()
-        guest_prog = InProgress.objects.filter(guest=guest).first()
+        user = request.session.get('guest', None)
+        user = Guest.objects.filter(id=user).first()
+        guest_prog = InProgress.objects.filter(guest=user).first()
         current_answers = guest_prog.answers
         if str(current_index) not in current_answers.keys():
-            print("Not in")
             current_answers[current_index] = answer
             guest_prog.answers = current_answers
         else:
+            if str(current_index + 1) in current_answers.keys():
+                value = current_answers[f"{str(current_index+1)}"]
+                request.session['crt']=value
             for k in current_answers.keys():
                 if k == str(current_index):
                     current_answers[k]=answer
         guest_prog.save()
 
         if current_index == 19:
+            # Handle final screen redirection with appropriate arguments
             print("No more, questions, final screen loading")
             return JsonResponse({})
         request.session['current_index'] = current_index + 1
@@ -156,11 +169,22 @@ def next_question(request):
 def prev_question(request):
     current_index = request.session.get('current_index', None)
     if current_index is None:
-        messages.error(request, "Something wrong happened")
+        messages.error(request, "Something wrong happened Or session has exipired")
         return redirect("core_app:verify_code")
-    if current_index < 1:
+    user = request.session.get('guest', None)
+    user = Guest.objects.filter(id=user).first()
+    guest_prog = InProgress.objects.filter(guest=user).first()
+    current_answers = guest_prog.answers
+    if str(current_index - 1) in current_answers.keys():
+        value = current_answers[f"{str(current_index-1)}"]
+        request.session['crt'] = value
+    guest_prog.save()
+
+    if current_index == 0:
         return redirect("core_app:exam")
     request.session['current_index'] = current_index - 1
     return redirect("core_app:exam")
+
+
 def final_screen(request):
     return render(request, "final_screen.html")
