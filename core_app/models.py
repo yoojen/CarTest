@@ -173,7 +173,7 @@ class GuestPerformance(models.Model):
 #     }
 # }
 class InProgress(models.Model):
-    guest=models.OneToOneField(Guest, on_delete=models.CASCADE)
+    guest=models.OneToOneField(Guest, on_delete=models.CASCADE, unique=True, related_name="in_progress")
     questions=models.ManyToManyField(Question)
     answers=models.JSONField(default=dict)
     current_index=models.IntegerField(default=0)
