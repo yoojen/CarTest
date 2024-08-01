@@ -68,12 +68,61 @@
                 <small class="text-muted">Injiza kode wahawe muri message na DS</small>
             </div>
         </div>
+        <div class="errors text-danger"></div>
+        <div class="info text-info"></div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary mx-3 mb-1">Injira</button>
+            <button type="submit" class="btn btn-primary mb-1 mx-1">Injira</button>
+            <button type="button" class="btn btn-danger text-capitalize mb-1" id="reset_btn">Reset current exam</button>
         </div>
     </form>
+   
 </div>
+<script>
+    const errors=document.querySelector(".errors")
+    const info=document.querySelector(".info")
+    const resetBtn=document.querySelector("#reset_btn")
+    const code=document.querySelector("#id_code")
+    resetBtn.addEventListener('click', async ()=>{
+        if (code.value == ''){
+            errors.innerHTML='Please fill the above field with your code';
+        }else{
+            const params = new URLSearchParams()
+            params.append('code', code.value)
+            const res = await fetch("{% url 'core_app:reset_exam' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie("csrftoken"),
+                    'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8"
+                },
+                body: params
+            })
+
+            const data = await res.json()
+            if (data["status"]=='OK'){
+                info.innerHTML='You can continue now!'
+            }else{
+                errors.innerHTML=data["status"]
+            }
+        }
+    })
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 {% endblock %}
+
 {% block footer %}
     <p class="text-muted text-center">Eugene mutuyimana developer &copy;</p>
 {% endblock %}
