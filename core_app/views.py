@@ -88,6 +88,8 @@ def generate_code(request):
 
 def verify_code(request):
     form = CodeVerificationForm()
+    if request.session.get('in_progress', None):
+        return redirect("core_app:exam")
     if request.method == 'POST':
         form = CodeVerificationForm(request.POST)
         if form.is_valid():
@@ -113,11 +115,14 @@ def verify_code(request):
                 return redirect("core_app:exam")
             else:
                 # Assign Questions
-                assigned_questions = Question.objects.order_by('?')[:5]
                 progress = InProgress.objects.filter(guest=guest_sub.guest).first()
                 if progress:
+                    if progress.date_created + timedelta(minutes=20) > timezone.now():
+                        messages.error(request, "You're allowed to use one brwoser at time or reset your current exam if you've deleted your session manually")
+                        return redirect("core_app:verify_code")
                     # Remove in progress user items
                     progress.delete()
+                assigned_questions = Question.objects.order_by('?')[:20]
                 progress = InProgress.objects.create(guest=guest_sub.guest)
                 progress.questions.set(assigned_questions)
                 progress.current_index = 0
@@ -181,6 +186,25 @@ def prev_question(request):
     request.session['current_index'] = current_index - 1
     return redirect("core_app:exam")
 
+def check_guest_status(request, code):
+    try:
+        guest_sub = Subscription.objects.get(code=code)
+        if not guest_sub.is_code_valid:
+            return None
+        if guest_sub.is_code_expired:
+            return None
+        return guest_sub
+    except Exception as e:
+        return None
+
+def reset_exam(request):
+    code = request.POST.get('code')
+    guest_sub = check_guest_status(request=request, code=code)
+    if guest_sub is not None:
+        deleted = guest_sub.guest.in_progress.delete()
+        if deleted:
+            return JsonResponse({"status": "OK"})
+    return JsonResponse({"status": "NOT_FOUND"})
 
 def final_screen(request):
     return render(request, "final_screen.html")
