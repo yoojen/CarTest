@@ -20,6 +20,6 @@ class GenerateCodeForm(forms.Form):
 
 class CodeVerificationForm(forms.Form):
     code = forms.CharField(max_length=10, required=True, help_text="Injiza kode wahawe muri sms kuri telefone yawe",
-                           widget=forms.widgets.Input(attrs={"class": "form-control"}))
+                           widget=forms.widgets.Input(attrs={"class": "form-control", "placeholder": "ex: AVI6589765"}))
     
 

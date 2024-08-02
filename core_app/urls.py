@@ -1,6 +1,7 @@
 from .views import (
     home, exam, contact_us, next_question, prev_question,
-    blog, payment, generate_code, verify_code, reset_exam
+    blog, payment, generate_code, verify_code, reset_exam,
+    final_screen
     )
 from django.urls import path
 
@@ -16,4 +17,5 @@ urlpatterns=[
     path('next-qt/', next_question, name="next_question"),
     path('prev-qt/', prev_question, name="prev_question"),
     path('reset/', reset_exam, name="reset_exam"),
+    path('done/', final_screen, name="final_screen"),
 ]

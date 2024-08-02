@@ -120,7 +120,7 @@ class Question(models.Model):
     
     
 class Answers(models.Model):
-    question=models.ForeignKey(Question, on_delete=models.CASCADE)
+    question=models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers")
     correct_answer = models.CharField(max_length=256)
     dummy_answer_1 = models.CharField(max_length=256)
     dummy_answer_2 = models.CharField(max_length=256)
@@ -178,6 +178,7 @@ class InProgress(models.Model):
     answers=models.JSONField(default=dict)
     current_index=models.IntegerField(default=0)
     date_created=models.DateTimeField(auto_now_add=True)
+    ended_at=models.DateTimeField(null=True)
 
     def __str__(self):
         return f"{self.guest}"
