@@ -1,1 +1,62 @@
-final screen
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container d-flex flex-column align-items-center" id="donwloadableItem">
+    <h2>YOUR FINAL REPORT</h2>
+    <small class="text-uppercase">CORRECT ANSWERS ARE HIGHLIGHTED IN LIGHTBLUE</small>
+    <p id="timeElapsed" class="fw-2">Wakoresheje Iminota: {{time_elapsed}}</p>
+    <form class="mt-5 mb-5">
+        {% for q in report %}
+            <div class="container">
+                <ol>
+                    {% for k, v in q.items %}
+                        {% if k == 'idx' %}
+                            <small class="container text-bg-primary">{{v}}</small>
+                        {% elif k == 'time_elapsed' %}
+                            <small></small>
+                        {% elif k == "question" %}
+                            <div class="form-control">
+                                <h6 class="mt-2 mb-2">{{v}}</h6>
+                            </div>
+                        {% elif k == "crt" %}
+                            <div class="container">
+                                <li class="mx-4 text-primary">{{v}}</li>
+                            </div>
+                        {% elif k == "guest_resp" %}
+                            <div class="container">
+                                <p class="text-info"><b>Your answer: {{v}}</b></p>
+                            </div>
+                        {% else %}
+                            <div class="container">
+                                <li class="mx-4">{{v}}</li >
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endfor %}
+    </form>
+</div>
+<div class="container d-flex align-items-center justify-content-center">
+    <button class=" btn btn-primary mt-5 mb-5" onclick="downloadPDF('My Final Report')">Download PDF</button>
+</div>
+   <script>
+    const timeElapsed = document.getElementById("timeElapsed")
+        function downloadPDF(filename){
+            const elementHTML = document.querySelector("#donwloadableItem");
+            const opt = {
+                margin: 1,
+                filename: filename + '.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: { scale: 4 },
+                jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
+            };
+            // New Promise-based usage:
+            try{
+                html2pdf().set(opt).from(elementHTML).save();
+            } catch(error){
+                alert("Please connect to network to download")
+            }
+        }
+    </script>
+{% endblock %}

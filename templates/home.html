@@ -13,12 +13,12 @@
                         &cross;
                     </button>
                 </div>
-                <form action="" method="POST">
+                <form action="{% url 'core_app:verify_code' %}" method="POST">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="code">Injiza Kode Yawe</label>
-                            <input type="text" name="" id="" class="form-control" aria-describedby="injiza code" placeholder="Injiza code" required>
+                            {{c_form.code}}
                             <small class="text-muted">Injiza kode wahawe muri message na DS</small>
                         </div>
                     </div>

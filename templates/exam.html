@@ -32,7 +32,6 @@
             {% csrf_token %}
             <div class="container">
                 <div class="form-control">
-                    <input type="hidden" name="question_id" id="" readonly disabled>
                     <p>{{index}}. {{question.question}}</p>
                     {% for option in options %}
                         {% if option == crt %}
@@ -49,11 +48,12 @@
                     {% endfor %}
                 </div>
                 <div class="button d-flex justify-content-end">
-                    {% if index == 20 %}
-                        <button type="submit" class="btn btn-primary mt-2 mb-2 pt-2 pb-2 px-5">Finish</button>
-                    {% endif %}
                     <a href="{% url 'core_app:prev_question' %}" class="btn btn-primary mt-2 mb-2  mx-2 pt-2 pb-2 px-5">Back</a>
-                    <button type="submit" class="btn btn-success mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
+                    {% if index == 20 %}
+                        <button type="submit" class="btn btn-warning mt-2 mb-2 pt-2 pb-2 px-5">Finish</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-success mt-2 mb-2 pt-2 pb-2 px-5">Next</button>
+                    {% endif %}
                 </div>
             </div>
         </form>
